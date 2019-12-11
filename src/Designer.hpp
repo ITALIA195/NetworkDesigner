@@ -3,6 +3,7 @@
 #include "IPAddress.hpp"
 #include <vector>
 #include <map>
+#include <set>
 #include <cmath>
 
 namespace designer
@@ -51,36 +52,25 @@ namespace designer
     class sorted
     {
     private:
-        std::vector<network> networks_;
+        std::multiset<ip::subnet> subnets_;
         network base_;
-        
-        size_t insertIndex(network net);
 
     public:
         sorted(ip::address net, ip::subnet sub)
             : base_{ net, sub }
-            , networks_{}
+            , subnets_{}
         {
             
         }
 
         sorted(network net)
             : base_{ net }
-            , networks_{}
+            , subnets_{}
         {
             
         }
 
         void add(uint32_t hosts);
-
-        network lastNetwork() const {
-            if (this->networks_.size() != 0)
-                return this->networks_.back();
-            return this->base_;
-        }
-
-        std::vector<network> networks() const {
-            return this->networks_;
-        }
+        std::vector<network> createNetworks() const;
     };
 }

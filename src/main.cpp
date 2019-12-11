@@ -14,10 +14,11 @@ int main(int argc, char *argv[])
     designer.add(24);
     designer.add(128);
 
-    auto networks = designer.networks();
+    std::cout << baseNet.to_string() << ' ' << std::to_string(baseSub.bits) << std::endl;
+    auto networks = designer.createNetworks();
     for (size_t i = 0; i < networks.size(); i++)
     {
-        std::cout << networks[i].ip.to_string() << '\t' << networks[i].subnet.to_string() << std::endl;
+        std::cout << networks[i].ip.to_string() << '\t' << std::to_string(networks[i].subnet.bits) << std::endl;
     }
     return 0;
 }
