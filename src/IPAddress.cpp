@@ -90,7 +90,7 @@ ip::subnet::subnet(uint8_t bits)
         this->bytes[i++] = 255;
         bits -= 8;
     }
-    this->bytes[i] = ((1 << bits) - 1) << (8 - bits);
+    this->bytes[i] = 0xFF << (8 - bits);
 }
 
 bool ip::subnet::operator<(const ip::subnet &rhs) const
