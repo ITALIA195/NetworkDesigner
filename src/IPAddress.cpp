@@ -49,11 +49,11 @@ ip::address ip::address::next() const
     return addr;
 }
 
-ip::address ip::address::next_net(const ip::subnet& curnet) const
+ip::address ip::address::next_net(const ip::subnet& sub) const
 {
     ip::address addr(this->bytes);
 
-    uint8_t hostbits = 32 - curnet.bits;
+    uint8_t hostbits = 32 - sub.bits;
     int i = 3;
     while (hostbits >= 8) {
         addr.bytes[i--] = 0;
