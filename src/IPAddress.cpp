@@ -1,5 +1,7 @@
 #include "IPAddress.hpp"
 #include <sstream>
+#include <cassert>
+#include <iostream>
 
 std::string ip::address::to_string() const
 {
@@ -49,36 +51,41 @@ ip::address ip::address::next() const
     return addr;
 }
 
-ip::address ip::address::next_net(const ip::subnet& sub) const
+ip::network ip::network::from_address(const ip::address addr, const ip::subnet subnet)
 {
-    ip::address addr(this->bytes_);
+    ip::address network_ip = addr & subnet;
+    return ip::network{ network_ip, subnet };
+}
 
-    uint8_t hostbits = 32 - sub.bits;
-    int i = 3;
-    while (hostbits >= 8) {
-        addr.bytes_[i--] = 0;
-        hostbits -= 8;
-    }
+ip::network ip::network::next_net(const ip::subnet& subnet) const
+{
+    assert(subnet.bits > 0);
 
-    uint16_t byte = (uint16_t)(addr.bytes_[i] & ~((1 << hostbits) - 1)) + (1 << hostbits);
+    ip::address ip = static_cast<ip::address>(*this);
+    ip::network net = network::from_address(ip, subnet);
+
+    int index = (subnet.bits - 1) / 8;
+
+    uint16_t byte = (uint16_t)net.bytes_[index] + (1U << ((32 - subnet.bits) % 8));
     if (byte < 256)
     {
-        addr.bytes_[i] = (uint8_t)byte;
+        net.bytes_[index] = (uint8_t)byte;
     }
     else
     {
-        addr.bytes_[i--] = 0;
-        while (i >= 0 && addr.bytes_[i] == 255) {
-            addr.bytes_[i] = 0;
-            i--;
+        for (--index; index >= 0; index--)
+        {
+            if (net.bytes_[index] != 255)
+            {
+                net.bytes_[index]++;
+                break;
+            }
+            net.bytes_[index] = 0;
         }
-
-        if (i < 0)
-            return ip::address(0, 0, 0, 0); // Overflow
-        
-        addr.bytes_[i]++;
+        assert(index >= 0 && "Overflow");
     }
-    return addr;
+
+    return net;
 }
 
 ip::subnet::subnet(uint8_t bits) 

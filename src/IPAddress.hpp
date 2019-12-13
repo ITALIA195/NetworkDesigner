@@ -31,7 +31,6 @@ namespace ip
         }
 
         address next() const;
-        address next_net(const subnet &curnet) const;
         std::string to_string() const;
         address operator &(const address &rhs) const;
         bool operator ==(const address &rhs) const;
@@ -53,14 +52,23 @@ namespace ip
         ip::subnet subnet_;
 
     public:
-        network(ip::address ip, ip::subnet subnet)
+        network(const ip::address ip, const ip::subnet subnet)
             : address{ ip }
             , subnet_{ subnet }
         {
         }
 
+        network(const std::array<uint8_t, 4> &bytes, const ip::subnet subnet)
+            : address{ bytes }
+            , subnet_{ subnet }
+        {
+        }
+
+        static ip::network from_address(const ip::address addr, const ip::subnet subnet);
+        ip::network next_net(const subnet &curnet) const;
+
         ip::subnet subnet() const {
             return subnet_;
         }
-    }
+    };
 }
