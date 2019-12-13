@@ -10,10 +10,10 @@ ip::subnet designer::subnetFromHosts(uint32_t hosts)
 void designer::linear::add(uint32_t hosts)
 {
     ip::subnet sub = subnetFromHosts(hosts);
-    designer::network lastnet = this->lastNetwork();
+    ip::network lastnet = this->lastNetwork();
 
-    ip::subnet netsub = std::min(sub, lastnet.subnet);
-    ip::address ip = lastnet.ip.next_net(netsub);
+    ip::subnet netsub = std::min(sub, lastnet.subnet());
+    ip::address ip = lastnet.next_net(netsub);
 
     this->networks_.push_back({ ip, sub });
 }
@@ -24,16 +24,16 @@ void designer::sorted::add(uint32_t hosts)
     this->subnets_.emplace(sub);
 }
 
-std::vector<designer::network> designer::sorted::createNetworks() const
+std::vector<ip::network> designer::sorted::createNetworks() const
 {
-    std::vector<designer::network> nets;
-    designer::network lastNet = this->base_;
+    std::vector<ip::network> nets;
+    ip::network lastNet = this->base_;
     for (auto it = this->subnets_.begin(); it != this->subnets_.end(); it++)
     {
         ip::subnet sub = *it;
         
-        ip::address ip = lastNet.ip.next_net(sub); //TODO: Broken
-        nets.push_back(lastNet = designer::network{ ip, sub });
+        ip::address ip = lastNet.next_net(sub);
+        nets.push_back(lastNet = ip::network{ ip, sub });
     }
 
     return nets;

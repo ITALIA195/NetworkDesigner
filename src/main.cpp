@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
     auto networks = designer.createNetworks();
     for (size_t i = 0; i < networks.size(); i++)
     {
-        std::cout << networks[i].ip.to_string() << '\t' << std::to_string(networks[i].subnet.bits) << std::endl;
+        std::cout << networks[i].to_string() << '\t' << std::to_string(networks[i].subnet().bits) << std::endl;
     }
     return 0;
 }

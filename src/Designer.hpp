@@ -13,8 +13,8 @@ namespace designer
     class linear
     {
     private:
-        std::vector<network> networks_;
-        network base_;
+        std::vector<ip::network> networks_;
+        ip::network base_;
 
     public:
         linear(ip::address net, ip::subnet sub)
@@ -24,7 +24,7 @@ namespace designer
             
         }
 
-        linear(network net)
+        linear(ip::network net)
             : base_{ net }
             , networks_{}
         {
@@ -33,13 +33,13 @@ namespace designer
 
         void add(uint32_t hosts);
 
-        network lastNetwork() const {
+        ip::network lastNetwork() const {
             if (this->networks_.size() != 0)
                 return this->networks_.back();
             return this->base_;
         }
 
-        std::vector<network> networks() const {
+        std::vector<ip::network> networks() const {
             return this->networks_;
         }
     };
