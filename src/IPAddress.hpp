@@ -7,6 +7,7 @@ namespace ip
 {
     class address;
     class subnet;
+    class network;
 
     class address
     {
@@ -45,4 +46,21 @@ namespace ip
         bool operator <(const subnet &rhs) const;
         bool operator ==(const subnet &rhs) const;
     };
+
+    class network : public address
+    {
+    private:
+        ip::subnet subnet_;
+
+    public:
+        network(ip::address ip, ip::subnet subnet)
+            : bytes{ ip.bytes }
+            , subnet_{ subnet }
+        {
+        }
+
+        ip::subnet subnet() const {
+            return subnet_;
+        }
+    }
 }
