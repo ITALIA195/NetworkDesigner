@@ -8,11 +8,6 @@
 
 namespace designer
 {
-    typedef struct {
-        ip::address ip;
-        ip::subnet subnet;
-    } network;
-
     ip::subnet subnetFromHosts(uint32_t hosts);
 
     class linear
@@ -53,7 +48,7 @@ namespace designer
     {
     private:
         std::multiset<ip::subnet> subnets_;
-        network base_;
+        ip::network base_;
 
     public:
         sorted(ip::address net, ip::subnet sub)
@@ -63,7 +58,7 @@ namespace designer
             
         }
 
-        sorted(network net)
+        sorted(ip::network net)
             : base_{ net }
             , subnets_{}
         {
@@ -71,6 +66,6 @@ namespace designer
         }
 
         void add(uint32_t hosts);
-        std::vector<network> createNetworks() const;
+        std::vector<ip::network> createNetworks() const;
     };
 }
