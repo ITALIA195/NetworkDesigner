@@ -12,21 +12,21 @@ namespace ip
     class address
     {
     protected:
-        std::array<uint8_t, 4> bytes;
+        std::array<uint8_t, 4> bytes_;
 
     public:
-        address(const std::array<uint8_t, 4> &bytes) 
-            : bytes{ bytes }
+        address(const std::array<uint8_t, 4> &bytes)
+            : bytes_{ bytes }
         {
         }
 
         address(uint8_t first, uint8_t second, uint8_t third, uint8_t fourth)
-            : bytes{ { first, second, third, fourth } }
+            : bytes_{ { first, second, third, fourth } }
         {
         }
 
         address(const address& base) 
-            : bytes{ base.bytes }
+            : bytes_{ base.bytes_ }
         {
         }
 
@@ -54,7 +54,7 @@ namespace ip
 
     public:
         network(ip::address ip, ip::subnet subnet)
-            : bytes{ ip.bytes }
+            : bytes_{ ip.bytes }
             , subnet_{ subnet }
         {
         }
