@@ -54,7 +54,7 @@ namespace ip
 
     public:
         network(ip::address ip, ip::subnet subnet)
-            : bytes_{ ip.bytes }
+            : address{ ip }
             , subnet_{ subnet }
         {
         }
