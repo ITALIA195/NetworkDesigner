@@ -93,10 +93,8 @@ ip::subnet::subnet(uint8_t bits)
     , bits{bits}
 {
     int i = 0;
-    while (bits >= 8) {
+    for (; bits >= 8; bits -= 8)
         this->bytes_[i++] = 255;
-        bits -= 8;
-    }
     this->bytes_[i] = 0xFF << (8 - bits);
 }
 
